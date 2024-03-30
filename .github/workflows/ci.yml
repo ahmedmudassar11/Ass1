@@ -22,6 +22,17 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Install flake8
+        run: |
+          pip install flake8
+
       - name: Run flake8
         run: |
           flake8 .
+
+      # Add more steps here as needed
+
+      # Fail the workflow if any step above fails
+      - name: Fail the workflow on error
+        if: ${{ failure() }}
+        run: exit 1
