@@ -1,12 +1,12 @@
-name: Automated Testing
+name: Unit Testing
 
 on:
   push:
     branches:
-      - test
+      - dev
 
 jobs:
-  test:
+  unit_testing:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +22,18 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Run pytest
+      - name: Install flake8
         run: |
-          pytest
+          pip install flake8
+
+      # Add additional steps if necessary to set up your test environment
+
+      - name: Run unit tests
+        run: |
+          # Replace this with your actual command to run unit tests
+          python path/to/your/test_script.py
+
+      # Fail the workflow if any step above fails
+      - name: Fail the workflow on error
+        if: ${{ failure() }}
+        run: exit 1
