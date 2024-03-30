@@ -1,18 +1,23 @@
-name: Continuous Integration
+name: Code Quality Check
 
 on:
   push:
-    branches:
-      - dev
+    branches: [dev]
 
 jobs:
-  build:
+  code_quality:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
 
+<<<<<<< HEAD
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -36,3 +41,9 @@ jobs:
       - name: Fail the workflow on error
         if: ${{ failure() }}
         run: exit 1
+=======
+    - name: Run Flake8
+      run: |        
+        pip install flake8  
+        flake8 .
+>>>>>>> ee6476e9b54a9f17bf2c73bf8c82d96618421dad
