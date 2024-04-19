@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -33,11 +32,18 @@ jobs:
 
       # Add more steps here as needed
 
-      # Always mark the workflow as successful
       - name: Mark workflow as successful
-        run: echo "Workflow passed successfully"
+        run: echo "SUCCESS" >> $GITHUB_ENV
 
-      # Fail the workflow only if the final success step fails
-      - name: Fail the workflow if the final step fails
-        if: always()
-        run: exit 1
+  check_success:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Check if workflow is successful
+        run: |
+          if [ -f "$GITHUB_ENV" ]; then
+            echo "Workflow status: $(cat $GITHUB_ENV)"
+          else
+            echo "Workflow status: UNKNOWN"
+            exit 1
+          fi
