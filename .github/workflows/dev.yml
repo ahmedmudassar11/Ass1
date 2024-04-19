@@ -31,8 +31,22 @@ jobs:
           flake8 .
 
       # Add more steps here as needed
+      - name: Build and Test
+        run: |
+          python setup.py build
+          python setup.py test
 
-      # Fail the workflow if any step above fails
-      - name: Fail the workflow on error
-        if: ${{ failure() }}
-        run: exit 1
+      - name: Package Application
+        run: |
+          python setup.py sdist bdist_wheel
+
+      - name: Publish Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-python-app
+          path: dist/
+      
+      - name: Deploy to Test Environment
+        run: |
+          # Add commands to deploy to your test environment (e.g., Docker, virtual environment)
+          echo "Deploying to test environment..."
